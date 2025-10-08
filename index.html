@@ -3,115 +3,139 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BigBet - Login</title>
+  <title>BigBet - Premium</title>
   <link rel="icon" href="favicon.png" type="image/png">
   <style>
     /* ===========================
-       ESTILO PREMIUM
+       BASE DARK PREMIUM
     =========================== */
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
     body {
       background: linear-gradient(135deg, #0a0a0f, #1a1030);
       color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       height: 100vh;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
     }
 
-    /* SPLASH */
+    /* ===== SPLASH ===== */
     #splash {
-      position: fixed;
-      top: 0; left: 0;
+      position: fixed; top: 0; left: 0;
       width: 100%; height: 100%;
-      background: linear-gradient(160deg, #0d0b16, #1a1030);
+      background: radial-gradient(circle at center, #1a1030, #000);
       display: flex; flex-direction: column;
       justify-content: center; align-items: center;
-      z-index: 10;
-      animation: fadeOut 2.5s ease forwards;
-      animation-delay: 2s;
+      z-index: 100;
+      animation: fadeOut 2.8s ease forwards;
+      animation-delay: 2.2s;
     }
-    #splash img {
-      width: 120px; border-radius: 12px;
-      box-shadow: 0 0 25px rgba(255,77,166,0.4);
-    }
-    #splash h1 {
-      margin-top: 15px;
-      color: #ff4da6;
-      font-size: 1.5rem;
-      letter-spacing: 2px;
-      animation: fadeIn 1.2s ease-in;
-    }
+    #splash img { width: 120px; border-radius: 14px; box-shadow: 0 0 25px rgba(255,77,166,0.4); }
+    #splash h1 { margin-top: 15px; color: #ff4da6; font-size: 1.6rem; letter-spacing: 1.5px; animation: fadeIn 1.2s ease; }
+    @keyframes fadeOut { 0%{opacity:1}100%{opacity:0;visibility:hidden} }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)} }
 
-    @keyframes fadeOut {
-      0% { opacity: 1; } 100% { opacity: 0; visibility: hidden; }
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    /* ===== JOGO ===== */
+    .game-container { width: 100%; height: calc(100vh - 150px); }
+    iframe { width: 100%; height: 100%; border: none; }
 
-    /* LOGIN */
-    .container {
-      background: rgba(15, 10, 30, 0.95);
-      border: 1px solid #ff4da6;
-      border-radius: 16px;
-      padding: 30px 25px;
-      width: 90%;
-      max-width: 380px;
-      text-align: center;
-      box-shadow: 0 0 25px rgba(255,77,166,0.25);
-      animation: fadeIn 1.5s ease;
-    }
-    .container h2 {
-      color: #ff4da6;
-      margin-bottom: 20px;
-    }
-    input {
-      width: 100%;
-      margin: 10px 0;
-      padding: 10px;
-      border: none;
-      border-radius: 8px;
-      outline: none;
-      background: #1c1c2e;
-      color: #fff;
-      font-size: 0.95rem;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: 0.3s;
+    /* ===== TIMER FLOAT ===== */
+    .timer-float {
+      position: fixed;
+      bottom: 110px; left: 20px;
       background: linear-gradient(135deg, #ff4da6, #ff82d3);
-      color: #fff;
-      margin-top: 10px;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      padding: 12px 22px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(255,77,166,0.5);
+      z-index: 10;
+      display: flex; flex-direction: column; align-items: center;
     }
-    button:hover { transform: scale(1.03); }
-    p {
-      margin-top: 15px;
+    .timer-float small { font-size: 0.8rem; opacity: 0.9; }
+
+    /* ===== MODAL TIMER ===== */
+    .modal {
+      display: none;
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      justify-content: center; align-items: center;
+      z-index: 99;
+    }
+    .modal-content {
+      background: #1a1030;
+      border: 2px solid #ff4da6;
+      border-radius: 12px;
+      padding: 25px;
+      text-align: center;
+      width: 90%; max-width: 360px;
+      box-shadow: 0 0 25px rgba(255,77,166,0.3);
+      animation: fadeIn 0.3s ease;
+    }
+    .modal-content h2 { color: #ff4da6; margin-bottom: 10px; }
+    .modal-content p { margin: 6px 0; }
+    .btn-fechar {
+      background: #ff4da6; color: #fff;
+      border: none; padding: 8px 16px;
+      border-radius: 8px; margin-top: 15px;
+      cursor: pointer; font-weight: bold;
+    }
+
+    /* ===== HISTÓRICO ===== */
+    #historico {
+      position: fixed; bottom: 60px;
+      left: 0; width: 100%; height: 50%;
+      background: rgba(10, 5, 20, 0.96);
+      display: none; overflow-y: auto;
+      border-top: 2px solid #ff4da6;
+      box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
+    }
+    #historico.ativo { display: block; animation: fadeIn 0.3s ease; }
+
+    #historico h2 { text-align: center; color: #ff4da6; margin: 10px 0; }
+    .filtros { display: flex; justify-content: center; gap: 10px; margin: 10px 0; }
+    .filtros button {
+      background: #1a1a3d; color: white; border: 2px solid #555;
+      border-radius: 8px; padding: 6px 14px; font-weight: bold; cursor: pointer; transition: 0.2s;
+    }
+    .filtros .ativo { border-color: #ff4da6; background: #2a2a5f; }
+
+    #listaHistorico {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+      gap: 8px; margin: 15px; padding-bottom: 20px;
+    }
+    .hist-item {
+      display: flex; justify-content: center; align-items: center;
+      height: 70px; border-radius: 8px; font-weight: bold;
+      font-size: 0.95rem; color: white; box-shadow: 0 0 5px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+    }
+    .hist-item:hover { transform: scale(1.05); }
+    .roxo { background: #8a2be2; }
+    .rosa { background: #ff4da6; }
+
+    /* ===== RODAPÉ ===== */
+    footer {
+      position: fixed;
+      bottom: 0; left: 0;
+      width: 100%; background: rgba(0,0,0,0.8);
+      border-top: 2px solid #ff4da6;
+      display: flex; justify-content: space-around;
+      align-items: center; padding: 10px 0;
+      z-index: 5;
+    }
+    footer a, footer button {
+      background: none; border: none;
+      color: #fff; font-weight: 500; cursor: pointer;
+      display: flex; flex-direction: column; align-items: center;
       font-size: 0.9rem;
     }
-    p a { color: #ff82d3; text-decoration: none; }
-
-    /* JOGO */
-    #gameSection {
-      display: none;
-      width: 100%; height: 100vh;
-      background: #000;
-    }
-    iframe {
-      width: 100%; height: 100%;
-      border: none;
-    }
+    footer a:hover, footer button:hover { color: #ff4da6; }
   </style>
 </head>
 <body>
@@ -119,100 +143,143 @@
   <!-- SPLASH -->
   <div id="splash">
     <img src="logo.png" alt="BigBet">
-    <h1>BigBet</h1>
-  </div>
-
-  <!-- LOGIN -->
-  <div class="container" id="loginSection">
-    <h2>🎯 Entrar no BigBet</h2>
-    <form id="loginForm">
-      <input type="email" id="email" placeholder="E-mail" required>
-      <input type="password" id="senha" placeholder="Senha" required>
-      <button type="submit">Entrar</button>
-    </form>
-    <p>Não tem conta? <a href="#" onclick="mostrarCadastro()">Cadastre-se</a></p>
-  </div>
-
-  <!-- CADASTRO -->
-  <div class="container" id="cadastroSection" style="display:none;">
-    <h2>📝 Criar Conta</h2>
-    <form id="cadastroForm">
-      <input type="text" id="nome" placeholder="Nome completo" required>
-      <input type="email" id="cadastroEmail" placeholder="E-mail" required>
-      <input type="password" id="cadastroSenha" placeholder="Senha" required>
-      <button type="submit">Cadastrar</button>
-    </form>
-    <p>Já tem conta? <a href="#" onclick="mostrarLogin()">Entrar</a></p>
+    <h1>BigBet Premium</h1>
   </div>
 
   <!-- JOGO -->
-  <div id="gameSection">
+  <div class="game-container">
     <iframe src="https://lxgo.me/go?brand=bigbet&bta=30211_0253" allowfullscreen></iframe>
   </div>
 
-  <script type="module">
-    import { auth, db } from "./firebase.js";
-    import {
-      createUserWithEmailAndPassword,
-      signInWithEmailAndPassword
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { collection, addDoc, serverTimestamp } 
-      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  <!-- TIMER -->
+  <button id="timerBtn" class="timer-float">
+    <span id="timerTempo">00:00</span>
+    <small id="timerValor">🎯 --</small>
+  </button>
 
-    const loginSection = document.getElementById("loginSection");
-    const cadastroSection = document.getElementById("cadastroSection");
-    const gameSection = document.getElementById("gameSection");
+  <!-- MODAL -->
+  <div id="modalTimer" class="modal">
+    <div class="modal-content">
+      <h2>⏳ Próxima Entrada</h2>
+      <p><strong>Horário:</strong> <span id="horaPrevista">--:--</span></p>
+      <p><strong>Previsão:</strong> <span id="alvoValor">--x</span></p>
+      <div class="alerta">⚠️ Jogue com responsabilidade!</div>
+      <button class="btn-fechar" onclick="toggleModal()">Fechar</button>
+    </div>
+  </div>
 
-    window.mostrarCadastro = () => {
-      loginSection.style.display = "none";
-      cadastroSection.style.display = "block";
-    };
-    window.mostrarLogin = () => {
-      cadastroSection.style.display = "none";
-      loginSection.style.display = "block";
-    };
+  <!-- HISTÓRICO -->
+  <section id="historico">
+    <h2>📜 Histórico</h2>
+    <div class="filtros">
+      <button data-cor="todas" class="ativo">Todas</button>
+      <button data-cor="roxo">Roxo</button>
+      <button data-cor="rosa">Rosa</button>
+    </div>
+    <div id="listaHistorico"></div>
+  </section>
 
-    // CADASTRO
-    document.getElementById("cadastroForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const nome = document.getElementById("nome").value;
-      const email = document.getElementById("cadastroEmail").value;
-      const senha = document.getElementById("cadastroSenha").value;
-      try {
-        const cred = await createUserWithEmailAndPassword(auth, email, senha);
-        await addDoc(collection(db, "usuarios"), {
-          uid: cred.user.uid,
-          nome, email, criadoEm: serverTimestamp()
-        });
-        alert("✅ Conta criada com sucesso!");
-        mostrarLogin();
-      } catch (err) {
-        alert("❌ Erro: " + err.message);
-      }
-    });
+  <!-- RODAPÉ -->
+  <footer>
+    <a href="https://t.me/aviatorvip100x" target="_blank">📢 Telegram</a>
+    <button onclick="toggleModal()">⏱ Timer</button>
+    <button onclick="abrirHistorico()">📜 Histórico</button>
+  </footer>
 
-    // LOGIN
-    document.getElementById("loginForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const email = document.getElementById("email").value;
-      const senha = document.getElementById("senha").value;
-      try {
-        await signInWithEmailAndPassword(auth, email, senha);
-        entrarNoJogo();
-      } catch (err) {
-        alert("❌ Erro: " + err.message);
-      }
-    });
+  <script>
+    /* ===========================
+       TIMER + HISTÓRICO LOCAL
+    =========================== */
+    const timerTempo = document.getElementById("timerTempo");
+    const timerValor = document.getElementById("timerValor");
+    const horaPrevista = document.getElementById("horaPrevista");
+    const alvoValor = document.getElementById("alvoValor");
+    const listaHistorico = document.getElementById("listaHistorico");
+    const minutosValidos = [1,4,7,8,9,11,14,17,18,19,21,24,27,28,29,31,34,37,38,39,41,44,47,48,49,51,54,57,58,59];
+    let proximaEntrada;
+    let historico = JSON.parse(localStorage.getItem("historicoBigBet")) || [];
 
-    function entrarNoJogo() {
-      loginSection.style.display = "none";
-      cadastroSection.style.display = "none";
-      gameSection.style.display = "block";
+    function calcularProximoHorario() {
+      const agora = new Date();
+      const minutoAtual = agora.getMinutes();
+      const horaAtual = agora.getHours();
+      let proximoMin = minutosValidos.find(m => m > minutoAtual);
+      let proximaHora = horaAtual;
+      if (!proximoMin) { proximoMin = minutosValidos[0]; proximaHora = (horaAtual + 1) % 24; }
+      return new Date(agora.getFullYear(), agora.getMonth(), agora.getDate(), proximaHora, proximoMin, 0);
     }
 
-    // Splash
+    function gerarResultado() {
+      const valor = (Math.random() * 19 + 1).toFixed(2);
+      const cor = valor <= 10 ? "roxo" : "rosa";
+      const emoji = cor === "roxo" ? "🟣" : "💗";
+      timerValor.textContent = `${emoji} ${valor}x`;
+      alvoValor.textContent = `${valor}x`;
+      horaPrevista.textContent = proximaEntrada.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      salvarHistorico(valor, cor);
+    }
+
+    function salvarHistorico(valor, cor) {
+      historico.unshift({ valor: parseFloat(valor), cor, hora: new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) });
+      historico = historico.slice(0, 50);
+      localStorage.setItem("historicoBigBet", JSON.stringify(historico));
+      atualizarHistorico();
+    }
+
+    function atualizarHistorico(filtro = "todas") {
+      listaHistorico.innerHTML = "";
+      (filtro === "todas" ? historico : historico.filter(h => h.cor === filtro))
+        .forEach(h => {
+          const div = document.createElement("div");
+          div.className = `hist-item ${h.cor}`;
+          div.textContent = `${h.valor.toFixed(2)}x`;
+          listaHistorico.appendChild(div);
+        });
+    }
+
+    document.querySelectorAll(".filtros button").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".filtros button").forEach(b => b.classList.remove("ativo"));
+        btn.classList.add("ativo");
+        atualizarHistorico(btn.dataset.cor);
+      });
+    });
+
+    function iniciarTimer() {
+      const agora = new Date();
+      proximaEntrada = calcularProximoHorario();
+      let diff = Math.floor((proximaEntrada - agora) / 1000);
+      gerarResultado();
+
+      clearInterval(window.timerInterval);
+      window.timerInterval = setInterval(() => {
+        if (diff <= 0) {
+          gerarResultado();
+          proximaEntrada = calcularProximoHorario();
+          diff = Math.floor((proximaEntrada - new Date()) / 1000);
+        }
+        const min = String(Math.floor(diff / 60)).padStart(2, "0");
+        const seg = String(diff % 60).padStart(2, "0");
+        timerTempo.textContent = `${min}:${seg}`;
+        diff--;
+      }, 1000);
+    }
+
+    function toggleModal() {
+      const modal = document.getElementById("modalTimer");
+      modal.style.display = modal.style.display === "flex" ? "none" : "flex";
+    }
+
+    function abrirHistorico() {
+      const sec = document.getElementById("historico");
+      sec.classList.toggle("ativo");
+      atualizarHistorico();
+    }
+
     window.addEventListener("load", () => {
       setTimeout(() => document.getElementById("splash").style.display = "none", 2500);
+      iniciarTimer();
+      atualizarHistorico();
     });
   </script>
 </body>
