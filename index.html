@@ -3,206 +3,151 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BigBet - Premium Gold</title>
+  <title>BigBet Gold - Premium App</title>
   <link rel="icon" href="favicon.png" type="image/png">
   <style>
     /* ===========================
-       BASE DARK PREMIUM GOLD
+       DARK PREMIUM GOLD STYLE
     =========================== */
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-    body {
-      background: linear-gradient(135deg, #000000, #1a1a1a);
-      color: #fff;
-      height: 100vh;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+    body{
+      background:linear-gradient(135deg,#000,#1a1a1a);
+      color:#fff;
+      height:100vh;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start;
+      overflow:hidden;
     }
 
     /* ===== SPLASH ===== */
-    #splash {
-      position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: radial-gradient(circle at center, #111, #000);
-      display: flex; flex-direction: column;
-      justify-content: center; align-items: center;
-      z-index: 100;
-      animation: fadeOut 2.8s ease forwards;
-      animation-delay: 2.2s;
+    #splash{
+      position:fixed;inset:0;
+      background:radial-gradient(circle,#111 10%,#000);
+      display:flex;flex-direction:column;justify-content:center;align-items:center;
+      animation:fadeOut 3s ease forwards;animation-delay:2.3s;
+      z-index:100;
     }
-    #splash img { width: 120px; border-radius: 12px; box-shadow: 0 0 25px rgba(212,175,55,0.6); }
-    #splash h1 { margin-top: 15px; color: #d4af37; font-size: 1.6rem; letter-spacing: 2px; animation: fadeIn 1.2s ease; }
-    @keyframes fadeOut { 0%{opacity:1}100%{opacity:0;visibility:hidden} }
-    @keyframes fadeIn { from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)} }
+    #splash img{width:120px;border-radius:12px;box-shadow:0 0 25px rgba(212,175,55,0.6);}
+    #splash h1{margin-top:15px;color:#d4af37;font-size:1.6rem;letter-spacing:2px;animation:fadeIn 1s ease;}
+    @keyframes fadeOut{100%{opacity:0;visibility:hidden}}
+    @keyframes fadeIn{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:translateY(0)}}
 
-    /* ===== JOGO ===== */
-    .game-container {
-      width: 100%;
-      height: calc(100vh - 150px);
-    }
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
+    /* ===== GAME ===== */
+    .game-container{width:100%;height:calc(100vh - 150px)}
+    iframe{width:100%;height:100%;border:none;}
 
-    /* ===== BOTÃO FLUTUANTE (JOGAR + TIMER) ===== */
-    .timer-float {
-      position: fixed;
-      bottom: 110px; left: 20px;
-      background: linear-gradient(135deg, #d4af37, #c9a227);
-      color: #000;
-      border: none;
-      border-radius: 50px;
-      padding: 14px 28px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 0 15px rgba(212,175,55,0.5);
-      z-index: 10;
-      display: flex; flex-direction: column; align-items: center;
-      transition: transform 0.2s, box-shadow 0.2s;
+    /* ===== FLOATING BUTTONS ===== */
+    .float-btn{
+      position:fixed;bottom:110px;
+      border:none;border-radius:50px;
+      padding:14px 28px;
+      font-weight:bold;
+      display:flex;flex-direction:column;align-items:center;
+      box-shadow:0 0 15px rgba(212,175,55,0.5);
+      cursor:pointer;transition:.3s;
+      background:linear-gradient(135deg,#d4af37,#c7a129);
+      color:#000;
     }
-    .timer-float:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 20px rgba(212,175,55,0.7);
-    }
-    .timer-float small {
-      font-size: 0.9rem;
-      color: #111;
-      opacity: 0.9;
-      font-weight: 600;
-    }
+    .float-btn:hover{transform:scale(1.05);box-shadow:0 0 25px rgba(212,175,55,0.8);}
+    .float-btn small{font-size:.9rem;color:#111;opacity:.9;font-weight:600;}
+    #timerBtn{left:20px;}
+    #premiumBtn{right:20px;background:linear-gradient(135deg,#b88900,#e0c15a);animation:glow 2.5s infinite alternate;}
+    @keyframes glow{from{box-shadow:0 0 10px rgba(212,175,55,.4);}to{box-shadow:0 0 25px rgba(212,175,55,.9);}}
 
-    /* ===== MODAL TIMER ===== */
-    .modal {
-      display: none;
-      position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.9);
-      justify-content: center; align-items: center;
-      z-index: 99;
+    /* ===== MODAL ===== */
+    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;z-index:99;}
+    .modal-content{
+      background:#111;border:2px solid #d4af37;border-radius:12px;
+      padding:25px;text-align:center;width:90%;max-width:380px;
+      box-shadow:0 0 25px rgba(212,175,55,0.3);animation:fadeIn .3s ease;
     }
-    .modal-content {
-      background: #111;
-      border: 2px solid #d4af37;
-      border-radius: 12px;
-      padding: 25px;
-      text-align: center;
-      width: 90%; max-width: 360px;
-      box-shadow: 0 0 25px rgba(212,175,55,0.3);
-      animation: fadeIn 0.3s ease;
-    }
-    .modal-content h2 {
-      color: #d4af37;
-      margin-bottom: 10px;
-      text-transform: uppercase;
-    }
-    .modal-content p { margin: 6px 0; }
-    .btn-fechar {
-      background: #d4af37; color: #000;
-      border: none; padding: 8px 16px;
-      border-radius: 8px; margin-top: 15px;
-      cursor: pointer; font-weight: bold;
+    .modal-content h2{color:#d4af37;margin-bottom:10px;text-transform:uppercase;}
+    .modal-content p{margin:6px 0;}
+    .btn-fechar{
+      background:#d4af37;color:#000;border:none;
+      padding:8px 16px;border-radius:8px;margin-top:15px;
+      cursor:pointer;font-weight:bold;
     }
 
     /* ===== HISTÓRICO ===== */
-    #historico {
-      position: fixed; bottom: 60px;
-      left: 0; width: 100%; height: 50%;
-      background: rgba(0, 0, 0, 0.95);
-      display: none; overflow-y: auto;
-      border-top: 2px solid #d4af37;
-      box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
+    #historico{position:fixed;bottom:60px;left:0;width:100%;height:50%;
+      background:rgba(0,0,0,.95);border-top:2px solid #d4af37;
+      box-shadow:0 -5px 20px rgba(0,0,0,.5);
+      display:none;overflow-y:auto;}
+    #historico.ativo{display:block;animation:fadeIn .3s ease;}
+    #historico h2{text-align:center;color:#d4af37;margin:10px 0;text-transform:uppercase;}
+    .filtros{display:flex;justify-content:center;gap:10px;margin:10px 0;}
+    .filtros button{
+      background:#111;color:#d4af37;border:2px solid #444;
+      border-radius:8px;padding:6px 14px;font-weight:bold;cursor:pointer;transition:.2s;
     }
-    #historico.ativo { display: block; animation: fadeIn 0.3s ease; }
+    .filtros .ativo{border-color:#d4af37;background:#222;}
+    #listaHistorico{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:8px;margin:15px;padding-bottom:20px;}
+    .hist-item{
+      background:#222;color:#d4af37;font-weight:bold;border-radius:8px;
+      display:flex;justify-content:center;align-items:center;
+      height:70px;box-shadow:inset 0 0 5px rgba(212,175,55,.5);transition:.2s;
+    }
+    .hist-item:hover{transform:scale(1.05)}
 
-    #historico h2 {
-      text-align: center;
-      color: #d4af37;
-      margin: 10px 0;
-      font-size: 1.2rem;
-      text-transform: uppercase;
+    /* ===== FOOTER ===== */
+    footer{
+      position:fixed;bottom:0;left:0;width:100%;
+      background:rgba(0,0,0,0.9);border-top:2px solid #d4af37;
+      display:flex;justify-content:space-around;align-items:center;
+      padding:10px 0;z-index:5;
     }
-    .filtros { display: flex; justify-content: center; gap: 10px; margin: 10px 0; }
-    .filtros button {
-      background: #111; color: #d4af37;
-      border: 2px solid #444;
-      border-radius: 8px; padding: 6px 14px;
-      font-weight: bold; cursor: pointer;
-      transition: 0.2s;
+    footer a,footer button{
+      background:none;border:none;color:#d4af37;font-weight:500;
+      cursor:pointer;display:flex;flex-direction:column;align-items:center;
+      font-size:.9rem;
     }
-    .filtros .ativo {
-      border-color: #d4af37;
-      background: #222;
-    }
-
-    #listaHistorico {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-      gap: 8px; margin: 15px; padding-bottom: 20px;
-    }
-    .hist-item {
-      display: flex; justify-content: center; align-items: center;
-      height: 70px; border-radius: 8px;
-      font-weight: bold; font-size: 0.95rem;
-      background: #222; color: #d4af37;
-      box-shadow: inset 0 0 5px rgba(212,175,55,0.5);
-      transition: transform 0.2s;
-    }
-    .hist-item:hover { transform: scale(1.05); }
-
-    /* ===== RODAPÉ ===== */
-    footer {
-      position: fixed;
-      bottom: 0; left: 0;
-      width: 100%; background: rgba(0,0,0,0.9);
-      border-top: 2px solid #d4af37;
-      display: flex; justify-content: space-around;
-      align-items: center; padding: 10px 0;
-      z-index: 5;
-    }
-    footer a, footer button {
-      background: none; border: none;
-      color: #d4af37; font-weight: 500;
-      cursor: pointer; display: flex;
-      flex-direction: column; align-items: center;
-      font-size: 0.9rem;
-    }
-    footer a:hover, footer button:hover { color: #fff; }
+    footer a:hover,footer button:hover{color:#fff;}
   </style>
 </head>
 <body>
 
   <!-- SPLASH -->
   <div id="splash">
-    <img src="logo.png" alt="BigBet">
+    <img src="logo.png" alt="BigBet Gold">
     <h1>BigBet Gold</h1>
   </div>
 
-  <!-- JOGO -->
+  <!-- GAME -->
   <div class="game-container">
     <iframe src="https://lxgo.me/go?brand=bigbet&bta=30211_0253" allowfullscreen></iframe>
   </div>
 
-  <!-- BOTÃO JOGAR (com timer interno) -->
-  <button id="timerBtn" class="timer-float">
+  <!-- BUTTONS -->
+  <button id="timerBtn" class="float-btn">
     🎮 Jogar
     <small id="timerTempo">00:00</small>
   </button>
 
-  <!-- MODAL -->
+  <button id="premiumBtn" class="float-btn">
+    💎 Rodada Premium
+    <small id="premiumTempo">--:--</small>
+  </button>
+
+  <!-- MODALS -->
   <div id="modalTimer" class="modal">
     <div class="modal-content">
-      <h2>Próxima Entrada</h2>
+      <h2>Entrada Rápida</h2>
       <p><strong>Horário:</strong> <span id="horaPrevista">--:--</span></p>
       <p><strong>Previsão:</strong> <span id="alvoValor">--x</span></p>
-      <p><small>💡 Entre 30s antes ou 30s depois</small></p>
-      <div class="alerta">⚠️ Jogue com responsabilidade!</div>
-      <button class="btn-fechar" onclick="toggleModal()">Fechar</button>
+      <p><small>💡 Entre 30s antes ou depois</small></p>
+      <button class="btn-fechar" onclick="toggleModal('modalTimer')">Fechar</button>
+    </div>
+  </div>
+
+  <div id="modalPremium" class="modal">
+    <div class="modal-content">
+      <h2>Rodada Premium</h2>
+      <p><strong>Horário:</strong> <span id="premiumHora">--:--</span></p>
+      <p><strong>Dica:</strong> 🎯 Excelente oportunidade detectada!</p>
+      <p><small>💰 Sinal gerado a cada 30 minutos</small></p>
+      <button class="btn-fechar" onclick="toggleModal('modalPremium')">Fechar</button>
     </div>
   </div>
 
@@ -211,101 +156,128 @@
     <h2>Histórico</h2>
     <div class="filtros">
       <button data-cor="todas" class="ativo">Todas</button>
-      <button data-cor="ouro">Ouro</button>
     </div>
     <div id="listaHistorico"></div>
   </section>
 
-  <!-- RODAPÉ -->
+  <!-- FOOTER -->
   <footer>
     <a href="https://t.me/aviatorvip100x" target="_blank">📢 Telegram</a>
-    <button onclick="toggleModal()">📈 Entradas</button>
+    <button onclick="toggleModal('modalPremium')">💎 Premium</button>
     <button onclick="abrirHistorico()">📜 Histórico</button>
   </footer>
 
   <script>
-    /* ===========================
-       TIMER + HISTÓRICO LOCAL
-    =========================== */
-    const timerBtn = document.getElementById("timerBtn");
-    const timerTempo = document.getElementById("timerTempo");
-    const horaPrevista = document.getElementById("horaPrevista");
-    const alvoValor = document.getElementById("alvoValor");
-    const listaHistorico = document.getElementById("listaHistorico");
-    const minutosValidos = [1,4,7,8,9,11,14,17,18,19,21,24,27,28,29,31,34,37,38,39,41,44,47,48,49,51,54,57,58,59];
-    let proximaEntrada;
-    let historico = JSON.parse(localStorage.getItem("historicoBigBetGold")) || [];
+    /* ===============================
+       TIMER RÁPIDO + PREMIUM + HISTÓRICO
+    =============================== */
+    const timerBtn=document.getElementById("timerBtn");
+    const premiumBtn=document.getElementById("premiumBtn");
+    const timerTempo=document.getElementById("timerTempo");
+    const premiumTempo=document.getElementById("premiumTempo");
+    const horaPrevista=document.getElementById("horaPrevista");
+    const alvoValor=document.getElementById("alvoValor");
+    const premiumHora=document.getElementById("premiumHora");
+    const listaHistorico=document.getElementById("listaHistorico");
+    let historico=JSON.parse(localStorage.getItem("historicoBigBetGold"))||[];
 
-    function calcularProximoHorario() {
-      const agora = new Date();
-      const minutoAtual = agora.getMinutes();
-      const horaAtual = agora.getHours();
-      let proximoMin = minutosValidos.find(m => m > minutoAtual);
-      let proximaHora = horaAtual;
-      if (!proximoMin) { proximoMin = minutosValidos[0]; proximaHora = (horaAtual + 1) % 24; }
-      return new Date(agora.getFullYear(), agora.getMonth(), agora.getDate(), proximaHora, proximoMin, 0);
+    const minutosValidos=[1,4,7,8,9,11,14,17,18,19,21,24,27,28,29,31,34,37,38,39,41,44,47,48,49,51,54,57,58,59];
+    let proximaEntrada,proximaPremium;
+
+    /* ===== NORMAL TIMER ===== */
+    function calcularProximoHorario(){
+      const agora=new Date();
+      const m=agora.getMinutes(),h=agora.getHours();
+      let prox=minutosValidos.find(x=>x>m);let hr=h;
+      if(!prox){prox=minutosValidos[0];hr=(h+1)%24;}
+      return new Date(agora.getFullYear(),agora.getMonth(),agora.getDate(),hr,prox,0);
     }
 
-    function gerarResultado() {
-      const valor = (Math.random() * 19 + 1).toFixed(2);
-      horaPrevista.textContent = proximaEntrada.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      alvoValor.textContent = `${valor}x`;
+    function gerarResultado(){
+      const valor=(Math.random()*19+1).toFixed(2);
+      horaPrevista.textContent=proximaEntrada.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+      alvoValor.textContent=`${valor}x`;
       salvarHistorico(valor);
     }
 
-    function salvarHistorico(valor) {
-      historico.unshift({ valor: parseFloat(valor), hora: new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) });
-      historico = historico.slice(0, 50);
-      localStorage.setItem("historicoBigBetGold", JSON.stringify(historico));
+    function salvarHistorico(valor){
+      historico.unshift({valor:parseFloat(valor),hora:new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})});
+      historico=historico.slice(0,50);
+      localStorage.setItem("historicoBigBetGold",JSON.stringify(historico));
       atualizarHistorico();
     }
 
-    function atualizarHistorico() {
-      listaHistorico.innerHTML = "";
-      historico.forEach(h => {
-        const div = document.createElement("div");
-        div.className = "hist-item";
-        div.textContent = `${h.valor.toFixed(2)}x`;
+    function atualizarHistorico(){
+      listaHistorico.innerHTML="";
+      historico.forEach(h=>{
+        const div=document.createElement("div");
+        div.className="hist-item";
+        div.textContent=`${h.valor.toFixed(2)}x`;
         listaHistorico.appendChild(div);
       });
     }
 
-    function iniciarTimer() {
-      const agora = new Date();
-      proximaEntrada = calcularProximoHorario();
-      let diff = Math.floor((proximaEntrada - agora) / 1000);
+    function iniciarTimer(){
+      const agora=new Date();
+      proximaEntrada=calcularProximoHorario();
+      let diff=Math.floor((proximaEntrada-agora)/1000);
       gerarResultado();
-
       clearInterval(window.timerInterval);
-      window.timerInterval = setInterval(() => {
-        if (diff <= 0) {
+      window.timerInterval=setInterval(()=>{
+        if(diff<=0){
           gerarResultado();
-          proximaEntrada = calcularProximoHorario();
-          diff = Math.floor((proximaEntrada - new Date()) / 1000);
+          proximaEntrada=calcularProximoHorario();
+          diff=Math.floor((proximaEntrada-new Date())/1000);
         }
-        const min = String(Math.floor(diff / 60)).padStart(2, "0");
-        const seg = String(diff % 60).padStart(2, "0");
-        timerTempo.textContent = `${min}:${seg}`;
+        const min=String(Math.floor(diff/60)).padStart(2,"0");
+        const seg=String(diff%60).padStart(2,"0");
+        timerTempo.textContent=`${min}:${seg}`;
         diff--;
-      }, 1000);
+      },1000);
     }
 
-    function toggleModal() {
-      const modal = document.getElementById("modalTimer");
-      modal.style.display = modal.style.display === "flex" ? "none" : "flex";
+    /* ===== PREMIUM TIMER (30min) ===== */
+    function iniciarPremium(){
+      const agora=new Date();
+      const minuto=agora.getMinutes();
+      const proximoMinuto=Math.ceil(minuto/30)*30;
+      proximaPremium=new Date(agora.getFullYear(),agora.getMonth(),agora.getDate(),agora.getHours(),proximoMinuto,0);
+      if(proximaPremium<=agora)proximaPremium.setMinutes(proximaPremium.getMinutes()+30);
+      let diff=Math.floor((proximaPremium-agora)/1000);
+      premiumHora.textContent=proximaPremium.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+      clearInterval(window.premiumInterval);
+      window.premiumInterval=setInterval(()=>{
+        if(diff<=0){
+          premiumHora.textContent=new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+          toggleModal('modalPremium');
+          diff=1800;
+        }
+        const min=String(Math.floor(diff/60)).padStart(2,"0");
+        const seg=String(diff%60).padStart(2,"0");
+        premiumTempo.textContent=`${min}:${seg}`;
+        diff--;
+      },1000);
     }
 
-    function abrirHistorico() {
-      const sec = document.getElementById("historico");
-      sec.classList.toggle("ativo");
+    /* ===== MODALS ===== */
+    function toggleModal(id){
+      const m=document.getElementById(id);
+      m.style.display=m.style.display==="flex"?"none":"flex";
+    }
+
+    function abrirHistorico(){
+      document.getElementById("historico").classList.toggle("ativo");
       atualizarHistorico();
     }
 
-    timerBtn.addEventListener("click", toggleModal);
+    timerBtn.addEventListener("click",()=>toggleModal("modalTimer"));
+    premiumBtn.addEventListener("click",()=>toggleModal("modalPremium"));
 
-    window.addEventListener("load", () => {
-      setTimeout(() => document.getElementById("splash").style.display = "none", 2500);
+    /* ===== INIT ===== */
+    window.addEventListener("load",()=>{
+      setTimeout(()=>document.getElementById("splash").style.display="none",2500);
       iniciarTimer();
+      iniciarPremium();
       atualizarHistorico();
     });
   </script>
