@@ -3,15 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BigBet - Premium</title>
+  <title>BigBet - Premium Gold</title>
   <link rel="icon" href="favicon.png" type="image/png">
   <style>
     /* ===========================
-       BASE DARK PREMIUM
+       BASE DARK PREMIUM GOLD
     =========================== */
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
     body {
-      background: linear-gradient(135deg, #0a0a0f, #1a1030);
+      background: linear-gradient(135deg, #000000, #1a1a1a);
       color: #fff;
       height: 100vh;
       overflow: hidden;
@@ -24,63 +27,84 @@
     #splash {
       position: fixed; top: 0; left: 0;
       width: 100%; height: 100%;
-      background: radial-gradient(circle at center, #1a1030, #000);
+      background: radial-gradient(circle at center, #111, #000);
       display: flex; flex-direction: column;
       justify-content: center; align-items: center;
       z-index: 100;
       animation: fadeOut 2.8s ease forwards;
       animation-delay: 2.2s;
     }
-    #splash img { width: 120px; border-radius: 14px; box-shadow: 0 0 25px rgba(255,77,166,0.4); }
-    #splash h1 { margin-top: 15px; color: #ff4da6; font-size: 1.6rem; letter-spacing: 1.5px; animation: fadeIn 1.2s ease; }
+    #splash img { width: 120px; border-radius: 12px; box-shadow: 0 0 25px rgba(212,175,55,0.6); }
+    #splash h1 { margin-top: 15px; color: #d4af37; font-size: 1.6rem; letter-spacing: 2px; animation: fadeIn 1.2s ease; }
     @keyframes fadeOut { 0%{opacity:1}100%{opacity:0;visibility:hidden} }
     @keyframes fadeIn { from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)} }
 
     /* ===== JOGO ===== */
-    .game-container { width: 100%; height: calc(100vh - 150px); }
-    iframe { width: 100%; height: 100%; border: none; }
+    .game-container {
+      width: 100%;
+      height: calc(100vh - 150px);
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
 
-    /* ===== TIMER FLOAT ===== */
+    /* ===== BOTÃO FLUTUANTE (JOGAR + TIMER) ===== */
     .timer-float {
       position: fixed;
       bottom: 110px; left: 20px;
-      background: linear-gradient(135deg, #ff4da6, #ff82d3);
-      color: white;
+      background: linear-gradient(135deg, #d4af37, #c9a227);
+      color: #000;
       border: none;
-      border-radius: 25px;
-      padding: 12px 22px;
-      font-size: 1rem;
+      border-radius: 50px;
+      padding: 14px 28px;
+      font-size: 1.1rem;
       font-weight: bold;
       cursor: pointer;
-      box-shadow: 0 0 15px rgba(255,77,166,0.5);
+      box-shadow: 0 0 15px rgba(212,175,55,0.5);
       z-index: 10;
       display: flex; flex-direction: column; align-items: center;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
-    .timer-float small { font-size: 0.8rem; opacity: 0.9; }
+    .timer-float:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(212,175,55,0.7);
+    }
+    .timer-float small {
+      font-size: 0.9rem;
+      color: #111;
+      opacity: 0.9;
+      font-weight: 600;
+    }
 
     /* ===== MODAL TIMER ===== */
     .modal {
       display: none;
       position: fixed; top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.85);
+      background: rgba(0, 0, 0, 0.9);
       justify-content: center; align-items: center;
       z-index: 99;
     }
     .modal-content {
-      background: #1a1030;
-      border: 2px solid #ff4da6;
+      background: #111;
+      border: 2px solid #d4af37;
       border-radius: 12px;
       padding: 25px;
       text-align: center;
       width: 90%; max-width: 360px;
-      box-shadow: 0 0 25px rgba(255,77,166,0.3);
+      box-shadow: 0 0 25px rgba(212,175,55,0.3);
       animation: fadeIn 0.3s ease;
     }
-    .modal-content h2 { color: #ff4da6; margin-bottom: 10px; }
+    .modal-content h2 {
+      color: #d4af37;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
     .modal-content p { margin: 6px 0; }
     .btn-fechar {
-      background: #ff4da6; color: #fff;
+      background: #d4af37; color: #000;
       border: none; padding: 8px 16px;
       border-radius: 8px; margin-top: 15px;
       cursor: pointer; font-weight: bold;
@@ -90,20 +114,32 @@
     #historico {
       position: fixed; bottom: 60px;
       left: 0; width: 100%; height: 50%;
-      background: rgba(10, 5, 20, 0.96);
+      background: rgba(0, 0, 0, 0.95);
       display: none; overflow-y: auto;
-      border-top: 2px solid #ff4da6;
+      border-top: 2px solid #d4af37;
       box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
     }
     #historico.ativo { display: block; animation: fadeIn 0.3s ease; }
 
-    #historico h2 { text-align: center; color: #ff4da6; margin: 10px 0; }
+    #historico h2 {
+      text-align: center;
+      color: #d4af37;
+      margin: 10px 0;
+      font-size: 1.2rem;
+      text-transform: uppercase;
+    }
     .filtros { display: flex; justify-content: center; gap: 10px; margin: 10px 0; }
     .filtros button {
-      background: #1a1a3d; color: white; border: 2px solid #555;
-      border-radius: 8px; padding: 6px 14px; font-weight: bold; cursor: pointer; transition: 0.2s;
+      background: #111; color: #d4af37;
+      border: 2px solid #444;
+      border-radius: 8px; padding: 6px 14px;
+      font-weight: bold; cursor: pointer;
+      transition: 0.2s;
     }
-    .filtros .ativo { border-color: #ff4da6; background: #2a2a5f; }
+    .filtros .ativo {
+      border-color: #d4af37;
+      background: #222;
+    }
 
     #listaHistorico {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
@@ -111,31 +147,32 @@
     }
     .hist-item {
       display: flex; justify-content: center; align-items: center;
-      height: 70px; border-radius: 8px; font-weight: bold;
-      font-size: 0.95rem; color: white; box-shadow: 0 0 5px rgba(0,0,0,0.3);
+      height: 70px; border-radius: 8px;
+      font-weight: bold; font-size: 0.95rem;
+      background: #222; color: #d4af37;
+      box-shadow: inset 0 0 5px rgba(212,175,55,0.5);
       transition: transform 0.2s;
     }
     .hist-item:hover { transform: scale(1.05); }
-    .roxo { background: #8a2be2; }
-    .rosa { background: #ff4da6; }
 
     /* ===== RODAPÉ ===== */
     footer {
       position: fixed;
       bottom: 0; left: 0;
-      width: 100%; background: rgba(0,0,0,0.8);
-      border-top: 2px solid #ff4da6;
+      width: 100%; background: rgba(0,0,0,0.9);
+      border-top: 2px solid #d4af37;
       display: flex; justify-content: space-around;
       align-items: center; padding: 10px 0;
       z-index: 5;
     }
     footer a, footer button {
       background: none; border: none;
-      color: #fff; font-weight: 500; cursor: pointer;
-      display: flex; flex-direction: column; align-items: center;
+      color: #d4af37; font-weight: 500;
+      cursor: pointer; display: flex;
+      flex-direction: column; align-items: center;
       font-size: 0.9rem;
     }
-    footer a:hover, footer button:hover { color: #ff4da6; }
+    footer a:hover, footer button:hover { color: #fff; }
   </style>
 </head>
 <body>
@@ -143,7 +180,7 @@
   <!-- SPLASH -->
   <div id="splash">
     <img src="logo.png" alt="BigBet">
-    <h1>BigBet Premium</h1>
+    <h1>BigBet Gold</h1>
   </div>
 
   <!-- JOGO -->
@@ -151,18 +188,19 @@
     <iframe src="https://lxgo.me/go?brand=bigbet&bta=30211_0253" allowfullscreen></iframe>
   </div>
 
-  <!-- TIMER -->
+  <!-- BOTÃO JOGAR (com timer interno) -->
   <button id="timerBtn" class="timer-float">
-    <span id="timerTempo">00:00</span>
-    <small id="timerValor">🎯 --</small>
+    🎮 Jogar
+    <small id="timerTempo">00:00</small>
   </button>
 
   <!-- MODAL -->
   <div id="modalTimer" class="modal">
     <div class="modal-content">
-      <h2>⏳ Próxima Entrada</h2>
+      <h2>Próxima Entrada</h2>
       <p><strong>Horário:</strong> <span id="horaPrevista">--:--</span></p>
       <p><strong>Previsão:</strong> <span id="alvoValor">--x</span></p>
+      <p><small>💡 Entre 30s antes ou 30s depois</small></p>
       <div class="alerta">⚠️ Jogue com responsabilidade!</div>
       <button class="btn-fechar" onclick="toggleModal()">Fechar</button>
     </div>
@@ -170,11 +208,10 @@
 
   <!-- HISTÓRICO -->
   <section id="historico">
-    <h2>📜 Histórico</h2>
+    <h2>Histórico</h2>
     <div class="filtros">
       <button data-cor="todas" class="ativo">Todas</button>
-      <button data-cor="roxo">Roxo</button>
-      <button data-cor="rosa">Rosa</button>
+      <button data-cor="ouro">Ouro</button>
     </div>
     <div id="listaHistorico"></div>
   </section>
@@ -182,7 +219,7 @@
   <!-- RODAPÉ -->
   <footer>
     <a href="https://t.me/aviatorvip100x" target="_blank">📢 Telegram</a>
-    <button onclick="toggleModal()">⏱ Timer</button>
+    <button onclick="toggleModal()">📈 Entradas</button>
     <button onclick="abrirHistorico()">📜 Histórico</button>
   </footer>
 
@@ -190,14 +227,14 @@
     /* ===========================
        TIMER + HISTÓRICO LOCAL
     =========================== */
+    const timerBtn = document.getElementById("timerBtn");
     const timerTempo = document.getElementById("timerTempo");
-    const timerValor = document.getElementById("timerValor");
     const horaPrevista = document.getElementById("horaPrevista");
     const alvoValor = document.getElementById("alvoValor");
     const listaHistorico = document.getElementById("listaHistorico");
     const minutosValidos = [1,4,7,8,9,11,14,17,18,19,21,24,27,28,29,31,34,37,38,39,41,44,47,48,49,51,54,57,58,59];
     let proximaEntrada;
-    let historico = JSON.parse(localStorage.getItem("historicoBigBet")) || [];
+    let historico = JSON.parse(localStorage.getItem("historicoBigBetGold")) || [];
 
     function calcularProximoHorario() {
       const agora = new Date();
@@ -211,39 +248,27 @@
 
     function gerarResultado() {
       const valor = (Math.random() * 19 + 1).toFixed(2);
-      const cor = valor <= 10 ? "roxo" : "rosa";
-      const emoji = cor === "roxo" ? "🟣" : "💗";
-      timerValor.textContent = `${emoji} ${valor}x`;
-      alvoValor.textContent = `${valor}x`;
       horaPrevista.textContent = proximaEntrada.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      salvarHistorico(valor, cor);
+      alvoValor.textContent = `${valor}x`;
+      salvarHistorico(valor);
     }
 
-    function salvarHistorico(valor, cor) {
-      historico.unshift({ valor: parseFloat(valor), cor, hora: new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) });
+    function salvarHistorico(valor) {
+      historico.unshift({ valor: parseFloat(valor), hora: new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) });
       historico = historico.slice(0, 50);
-      localStorage.setItem("historicoBigBet", JSON.stringify(historico));
+      localStorage.setItem("historicoBigBetGold", JSON.stringify(historico));
       atualizarHistorico();
     }
 
-    function atualizarHistorico(filtro = "todas") {
+    function atualizarHistorico() {
       listaHistorico.innerHTML = "";
-      (filtro === "todas" ? historico : historico.filter(h => h.cor === filtro))
-        .forEach(h => {
-          const div = document.createElement("div");
-          div.className = `hist-item ${h.cor}`;
-          div.textContent = `${h.valor.toFixed(2)}x`;
-          listaHistorico.appendChild(div);
-        });
-    }
-
-    document.querySelectorAll(".filtros button").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".filtros button").forEach(b => b.classList.remove("ativo"));
-        btn.classList.add("ativo");
-        atualizarHistorico(btn.dataset.cor);
+      historico.forEach(h => {
+        const div = document.createElement("div");
+        div.className = "hist-item";
+        div.textContent = `${h.valor.toFixed(2)}x`;
+        listaHistorico.appendChild(div);
       });
-    });
+    }
 
     function iniciarTimer() {
       const agora = new Date();
@@ -275,6 +300,8 @@
       sec.classList.toggle("ativo");
       atualizarHistorico();
     }
+
+    timerBtn.addEventListener("click", toggleModal);
 
     window.addEventListener("load", () => {
       setTimeout(() => document.getElementById("splash").style.display = "none", 2500);
