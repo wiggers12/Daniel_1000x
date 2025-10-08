@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BigBet - Login</title>
+  <link rel="icon" href="favicon.png" type="image/png">
+  <style>
+    /* ===========================
+       ESTILO PREMIUM
+    =========================== */
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #0a0a0f, #1a1030);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* SPLASH */
+    #splash {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(160deg, #0d0b16, #1a1030);
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      z-index: 10;
+      animation: fadeOut 2.5s ease forwards;
+      animation-delay: 2s;
+    }
+    #splash img {
+      width: 120px; border-radius: 12px;
+      box-shadow: 0 0 25px rgba(255,77,166,0.4);
+    }
+    #splash h1 {
+      margin-top: 15px;
+      color: #ff4da6;
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+      animation: fadeIn 1.2s ease-in;
+    }
+
+    @keyframes fadeOut {
+      0% { opacity: 1; } 100% { opacity: 0; visibility: hidden; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* LOGIN */
+    .container {
+      background: rgba(15, 10, 30, 0.95);
+      border: 1px solid #ff4da6;
+      border-radius: 16px;
+      padding: 30px 25px;
+      width: 90%;
+      max-width: 380px;
+      text-align: center;
+      box-shadow: 0 0 25px rgba(255,77,166,0.25);
+      animation: fadeIn 1.5s ease;
+    }
+    .container h2 {
+      color: #ff4da6;
+      margin-bottom: 20px;
+    }
+    input {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      outline: none;
+      background: #1c1c2e;
+      color: #fff;
+      font-size: 0.95rem;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+      background: linear-gradient(135deg, #ff4da6, #ff82d3);
+      color: #fff;
+      margin-top: 10px;
+    }
+    button:hover { transform: scale(1.03); }
+    p {
+      margin-top: 15px;
+      font-size: 0.9rem;
+    }
+    p a { color: #ff82d3; text-decoration: none; }
+
+    /* JOGO */
+    #gameSection {
+      display: none;
+      width: 100%; height: 100vh;
+      background: #000;
+    }
+    iframe {
+      width: 100%; height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SPLASH -->
+  <div id="splash">
+    <img src="logo.png" alt="BigBet">
+    <h1>BigBet</h1>
+  </div>
+
+  <!-- LOGIN -->
+  <div class="container" id="loginSection">
+    <h2>🎯 Entrar no BigBet</h2>
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="E-mail" required>
+      <input type="password" id="senha" placeholder="Senha" required>
+      <button type="submit">Entrar</button>
+    </form>
+    <p>Não tem conta? <a href="#" onclick="mostrarCadastro()">Cadastre-se</a></p>
+  </div>
+
+  <!-- CADASTRO -->
+  <div class="container" id="cadastroSection" style="display:none;">
+    <h2>📝 Criar Conta</h2>
+    <form id="cadastroForm">
+      <input type="text" id="nome" placeholder="Nome completo" required>
+      <input type="email" id="cadastroEmail" placeholder="E-mail" required>
+      <input type="password" id="cadastroSenha" placeholder="Senha" required>
+      <button type="submit">Cadastrar</button>
+    </form>
+    <p>Já tem conta? <a href="#" onclick="mostrarLogin()">Entrar</a></p>
+  </div>
+
+  <!-- JOGO -->
+  <div id="gameSection">
+    <iframe src="https://lxgo.me/go?brand=bigbet&bta=30211_0253" allowfullscreen></iframe>
+  </div>
+
+  <script type="module">
+    import { auth, db } from "./firebase.js";
+    import {
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { collection, addDoc, serverTimestamp } 
+      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const loginSection = document.getElementById("loginSection");
+    const cadastroSection = document.getElementById("cadastroSection");
+    const gameSection = document.getElementById("gameSection");
+
+    window.mostrarCadastro = () => {
+      loginSection.style.display = "none";
+      cadastroSection.style.display = "block";
+    };
+    window.mostrarLogin = () => {
+      cadastroSection.style.display = "none";
+      loginSection.style.display = "block";
+    };
+
+    // CADASTRO
+    document.getElementById("cadastroForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const nome = document.getElementById("nome").value;
+      const email = document.getElementById("cadastroEmail").value;
+      const senha = document.getElementById("cadastroSenha").value;
+      try {
+        const cred = await createUserWithEmailAndPassword(auth, email, senha);
+        await addDoc(collection(db, "usuarios"), {
+          uid: cred.user.uid,
+          nome, email, criadoEm: serverTimestamp()
+        });
+        alert("✅ Conta criada com sucesso!");
+        mostrarLogin();
+      } catch (err) {
+        alert("❌ Erro: " + err.message);
+      }
+    });
+
+    // LOGIN
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const senha = document.getElementById("senha").value;
+      try {
+        await signInWithEmailAndPassword(auth, email, senha);
+        entrarNoJogo();
+      } catch (err) {
+        alert("❌ Erro: " + err.message);
+      }
+    });
+
+    function entrarNoJogo() {
+      loginSection.style.display = "none";
+      cadastroSection.style.display = "none";
+      gameSection.style.display = "block";
+    }
+
+    // Splash
+    window.addEventListener("load", () => {
+      setTimeout(() => document.getElementById("splash").style.display = "none", 2500);
+    });
+  </script>
+</body>
+</html>
